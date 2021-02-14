@@ -17,10 +17,11 @@
     <p>Your password:<input id="result" type="text" size="64" disabled></p>
 
     <script>
-        let tmp = document.cookie;
-        let fullname, masterpassword = document.cookie.split("=")[1].split(":")
-        alert(fullname)
-        alert(masterpassword)
+        if (document.cookie.length > 0) {
+            let fullname, masterpassword = document.cookie.split("=")
+            alert(fullname)
+            alert(masterpassword)
+        }
         async function create_password(message) {
             const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
             const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
@@ -31,7 +32,7 @@
                 c = [], d = 0, e = a.length; e > d; d += 4) f = (a.charCodeAt(d) << 24) + (a.charCodeAt(d + 1) << 16) + (a.charCodeAt(d + 2) << 8) + a.charCodeAt(d + 3),
                     0 !== f ? (k = f % 85, f = (f - k) / 85, j = f % 85, f = (f - j) / 85, i = f % 85,
                         f = (f - i) / 85, h = f % 85, f = (f - h) / 85, g = f % 85, c.push(g + 33, h + 33, i + 33, j + 33, k + 33)) : c.push(122);
-            return function (a, b) {for (var c = b; c > 0; c--) a.pop();}(c, b.length), String.fromCharCode.apply(String, c);
+            return function (a, b) { for (var c = b; c > 0; c--) a.pop(); }(c, b.length), String.fromCharCode.apply(String, c);
         }
         document.getElementById("generate").addEventListener('click', async function () {
             let fullname = document.getElementById("fullname").value
