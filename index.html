@@ -18,9 +18,8 @@
 
     <script>
         if (document.cookie.length > 0) {
-            let fullname, masterpassword = document.cookie.split("=")
+            let fullname = document.cookie
             alert(fullname)
-            alert(masterpassword)
         }
         async function create_password(message) {
             const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
