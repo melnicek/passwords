@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>passwords.melnicek.xyz</title>
+</head>
+
+<body>
+    <input type="text" id="fullname">
+    <input type="text" id="masterpassword">
+    <input type="text" id="service">
+    <button id="generate">Generate</button>
+    <hr>
+    <p>Your password:<input id="result" type="text" size="64" disabled></p>
+
+    <script>
+        let tmp = document.cookie;
+        let fullname, masterpassword = document.cookie.split("=")[1].split(":")
+        alert(fullname)
+        alert(masterpassword)
+        async function create_password(message) {
+            const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+            const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+            var a = hashHex.substring(0, 16), b, c, d, e, f, g, h, i, j, k;
+            for (!/[^\x00-\xFF]/.test(a), b = "\x00\x00\x00\x00".slice(a.length % 4 || 4), a += b,
+                c = [], d = 0, e = a.length; e > d; d += 4) f = (a.charCodeAt(d) << 24) + (a.charCodeAt(d + 1) << 16) + (a.charCodeAt(d + 2) << 8) + a.charCodeAt(d + 3),
+                    0 !== f ? (k = f % 85, f = (f - k) / 85, j = f % 85, f = (f - j) / 85, i = f % 85,
+                        f = (f - i) / 85, h = f % 85, f = (f - h) / 85, g = f % 85, c.push(g + 33, h + 33, i + 33, j + 33, k + 33)) : c.push(122);
+            return function (a, b) {for (var c = b; c > 0; c--) a.pop();}(c, b.length), String.fromCharCode.apply(String, c);
+        }
+        document.getElementById("generate").addEventListener('click', async function () {
+            let fullname = document.getElementById("fullname").value
+            let masterpassword = document.getElementById("masterpassword").value
+            let service = document.getElementById("service").value
+            document.cookie = "remember=" + fullname + ":" + masterpassword;
+            document.getElementById("result").value = await create_password(fullname + masterpassword + service)
+        });
+    </script>
+</body>
+
+</html>
